@@ -1,54 +1,64 @@
 import React, {Component} from "react";
-import FeedbackOptions from "./FeedbackWidget/FeedbackOptions";
-import Section from "./FeedbackWidget/Section";
-import Statistics from "./FeedbackWidget/Statistics";
-import Notification from "./FeedbackWidget/Notification";
+import ContactForm from "./ContactBook/ContactForm";
+import ContactList from "./ContactBook/ContactList";
+import Filter from "./ContactBook/Filter";
+import initialContacts from "./data/contacts.json";
+import { nanoid } from 'nanoid';
+import css from './ContactBook/ContactBook.module.css'
 
 class App extends Component {
   state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+    contacts: initialContacts,
+    filter: '',
+  }
+  
+  deleteContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId)
+    }))
   }
 
-  onLeaveFeedback = (event) => {
-    this.setState(prevState => ({
-      [event.target.innerText.toLowerCase()]: prevState[event.target.innerText.toLowerCase()] + 1,
+  changeFilter = event => {
+    this.setState({ filter: event.currentTarget.value });
+  };
+
+  contactAdd = (name, number) => {
+    const contact = {
+      id: nanoid(),
+      name,
+      number,
+    };
+
+    if (this.state.contacts.map(contact => contact.name).includes(name)) {
+      alert(`${name} is already in contact`);
+      return;
+    }
+
+    this.setState(({ contacts }) => ({
+      contacts: [contact, ...contacts],
     }));
   }
-
-  countTotalFeedback = () => {
-    return this.state.good + this.state.neutral + this.state.bad
-  }
-
-  countPositiveFeedbackPercentage = () => {
-    const countTotal = this.countTotalFeedback();
-    return !countTotal ? 0 : Math.round(this.state.good/countTotal * 100)
-  }
-
-  render() {
-    const {good, neutral, bad} = this.state;
-        
+  
+  render() { 
     return (
-      <>
-        <Section title="Please leave feedback">
-          <FeedbackOptions options={this.state} onLeaveFeedback={this.onLeaveFeedback}></FeedbackOptions>
-        </Section>
-
-        {(this.countTotalFeedback() === 0 ?
-          <Notification message="There is no feedback"></Notification> :
-          <Section title="Statistics">
-            <Statistics
-              onStateGood={good}
-              onStateNeutral={neutral}
-              onStateBad={bad}
-              onStateTotal={this.countTotalFeedback}
-              onStatePercentage={this.countPositiveFeedbackPercentage}
-            />
-          </Section>
-        )}
-      </>      
-    );
+      <div>
+        <div className={css.box}>
+          <h1>Phonebook</h1>
+          <ContactForm
+            contactAdd={this.contactAdd}
+          />
+        </div>
+        <div className={css.box}>
+          <h2>Contacts</h2>
+          <Filter
+            findeName={this.changeFilter} />
+          <ContactList
+            data={this.state}
+            deleteContact={this.deleteContact}            
+          />
+        </div>
+      </div>
+    )  
   }
 }
 

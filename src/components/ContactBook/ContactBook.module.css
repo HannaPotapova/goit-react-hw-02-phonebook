@@ -1,28 +1,36 @@
 .box {
-    width: 600px;
+    width: 250px;
     margin-top: 25px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 10px;
+    border: 2px solid rgb(255, 255, 41);
+    text-align: center;
     margin-left: auto;
     margin-right: auto;
-    padding-bottom: 10px;
-    border: 2px solid salmon;
 }
 
-.box_feedback {
+.box_contact {
     display: flex;
-    justify-content: center;
-    gap: 15px;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
 }
 
 .application {
     text-align: center;
     font-size: 24px;
     margin-bottom: 25px;
-    color: wheat
+    color: wheat;
 }
 
 .button {
     padding: 10px 30px;
-    border: 1px solid black;
+    margin-top: 15px;
+    width: 250px;
+    border: 1px solid rgb(255, 255, 41);
+    background-color: rgb(255, 255, 41);
+    color: rgb(46, 46, 46);
     border-radius: 4px;
     font-size: 16px;
     font-weight: 600;
@@ -32,7 +40,7 @@
 
 .button:hover,
 .button:focus {
-    background-color: sandybrown;
+    background-color: rgb(24, 151, 255);
     color: white;
     box-shadow: 2px 2px 4px gray;
 }
@@ -53,4 +61,15 @@
 
 .title:hover {
     scale: 1.3;
+}
+
+.label {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 250px;
+}
+
+.item {
+    text-align: left;
 }
