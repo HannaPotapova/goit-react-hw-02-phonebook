@@ -29,7 +29,9 @@ class App extends Component {
       number,
     };
 
-    if (this.state.contacts.map(contact => contact.name).includes(name)) {
+    const isExist = this.state.contacts.map(contact => contact.name).includes(name);
+
+    if (isExist) {
       alert(`${name} is already in contact`);
       return;
     }
@@ -39,6 +41,14 @@ class App extends Component {
     }));
   }
   
+  filteredContacts = () => {
+    const { contacts, filter } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+
+    return contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter
+    ));
+  }
+
   render() { 
     return (
       <div>
@@ -53,7 +63,7 @@ class App extends Component {
           <Filter
             findeName={this.changeFilter} />
           <ContactList
-            data={this.state}
+            contacts={this.filteredContacts()}
             deleteContact={this.deleteContact}            
           />
         </div>
